@@ -23,6 +23,11 @@ jobs:
 
       - name: 设置 Android SDK
         uses: android-actions/setup-android@v3
+        with:
+          api-level: 34
+          build-tools: 34.0.0
+          ndk: false
+          cmake: false
 
       - name: 授权 Gradle
         run: chmod +x gradlew
