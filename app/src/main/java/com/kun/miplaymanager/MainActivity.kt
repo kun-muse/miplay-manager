@@ -21,9 +21,18 @@ class MainActivity : AppCompatActivity() {
         .readTimeout(10, TimeUnit.SECONDS)
         .build()
 
-    private val serverHost = "192.168.1.10"
-    private val serverPort = 8092
-    private val baseUrl = "http://$serverHost:$serverPort"
+    // 服务器地址（可修改，保存在 SharedPreferences）
+    private val PREFS_NAME = "MiPlayPrefs"
+    private val KEY_HOST = "server_host"
+    private val KEY_PORT = "server_port"
+    private val DEFAULT_HOST = "192.168.1.10"
+    private val DEFAULT_PORT = 8092
+    private val PRESET_LAN_HOST = "192.168.1.10"
+    private val PRESET_TAILSCALE_HOST = "100.88.1.6"
+
+    private var serverHost = DEFAULT_HOST
+    private var serverPort = DEFAULT_PORT
+    private val baseUrl get() = "http://$serverHost:$serverPort"
     private val jsonType = "application/json; charset=utf-8".toMediaType()
 
     // UI 元素
@@ -48,16 +57,45 @@ class MainActivity : AppCompatActivity() {
     private lateinit var btnTestSound: Button
     private lateinit var tvLog: TextView
     private lateinit var scrollLog: ScrollView
+    private lateinit var tvServerAddr: TextView
+    private lateinit var etServerHost: EditText
+    private lateinit var etServerPort: EditText
+    private lateinit var btnPresetLan: Button
+    private lateinit var btnPresetTailscale: Button
+    private lateinit var btnSaveServer: Button
 
     private var currentVolumeRaw = 10
     private var isMuted = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        loadServerSettings()
         setContentView(R.layout.activity_main)
         initViews()
         setupListeners()
+        updateServerDisplay()
         refreshAll()
+    }
+
+    private fun loadServerSettings() {
+        val prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
+        serverHost = prefs.getString(KEY_HOST, DEFAULT_HOST) ?: DEFAULT_HOST
+        serverPort = prefs.getInt(KEY_PORT, DEFAULT_PORT)
+    }
+
+    private fun saveServerSettings(host: String, port: Int) {
+        getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit()
+            .putString(KEY_HOST, host)
+            .putInt(KEY_PORT, port)
+            .apply()
+        serverHost = host
+        serverPort = port
+    }
+
+    private fun updateServerDisplay() {
+        tvServerAddr.text = "服务器：$serverHost:$serverPort"
+        etServerHost.setText(serverHost)
+        etServerPort.setText(serverPort.toString())
     }
 
     private fun initViews() {
@@ -82,10 +120,42 @@ class MainActivity : AppCompatActivity() {
         btnTestSound = findViewById(R.id.btnTestSound)
         tvLog = findViewById(R.id.tvLog)
         scrollLog = findViewById(R.id.scrollLog)
+        tvServerAddr = findViewById(R.id.tvServerAddr)
+        etServerHost = findViewById(R.id.etServerHost)
+        etServerPort = findViewById(R.id.etServerPort)
+        btnPresetLan = findViewById(R.id.btnPresetLan)
+        btnPresetTailscale = findViewById(R.id.btnPresetTailscale)
+        btnSaveServer = findViewById(R.id.btnSaveServer)
     }
 
     private fun setupListeners() {
         btnRefresh.setOnClickListener { refreshAll() }
+
+        // 服务器地址设置
+        btnPresetLan.setOnClickListener {
+            etServerHost.setText(PRESET_LAN_HOST)
+            etServerPort.setText(DEFAULT_PORT.toString())
+            log("已填入家里 Wi-Fi 地址：$PRESET_LAN_HOST:$DEFAULT_PORT")
+        }
+        btnPresetTailscale.setOnClickListener {
+            etServerHost.setText(PRESET_TAILSCALE_HOST)
+            etServerPort.setText(DEFAULT_PORT.toString())
+            log("已填入 Tailscale 地址：$PRESET_TAILSCALE_HOST:$DEFAULT_PORT（需手机开 Tailscale）")
+        }
+        btnSaveServer.setOnClickListener {
+            val host = etServerHost.text.toString().trim()
+            val portStr = etServerPort.text.toString().trim()
+            if (host.isEmpty()) {
+                Toast.makeText(this, "请输入主机地址", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            val port = portStr.toIntOrNull() ?: DEFAULT_PORT
+            saveServerSettings(host, port)
+            updateServerDisplay()
+            log("✓ 服务器地址已保存：$host:$port")
+            Toast.makeText(this, "已保存，正在连接 $host:$port", Toast.LENGTH_SHORT).show()
+            refreshAll()
+        }
 
         // 音量滑块：0-15 原始值
         seekVolume.max = 15
@@ -137,7 +207,8 @@ class MainActivity : AppCompatActivity() {
                     tvActiveSource.text = "当前来源：--"
                     tvDevice.text = "设备：--"
                     log("✗ 连接失败：${e.message}")
-                    log("请检查：手机连家里 Wi-Fi，Debian 已开机")
+                    log("当前服务器：$serverHost:$serverPort")
+                    log("家里用 192.168.1.10，外出用 100.88.1.6（需开 Tailscale）")
                 }
             }
         }
