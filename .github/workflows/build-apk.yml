@@ -50,3 +50,36 @@ jobs:
           name: miplay-manager-v2
           path: app/build/outputs/apk/debug/app-debug.apk
           retention-days: 30
+
+      - name: 获取版本号
+        id: version
+        run: |
+          VERSION=$(grep -oP 'versionName "\K[^"]+' app/build.gradle)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "版本号：$VERSION"
+
+      - name: 创建 Release 并上传 APK
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version.outputs.version }}-${{ github.run_number }}
+          name: 妙播管理器 v${{ steps.version.outputs.version }}（构建 #${{ github.run_number }}）
+          body: |
+            妙播管理器 Android App v${{ steps.version.outputs.version }}
+            
+            功能：
+            - 状态显示（来源/妙播/DLNA/播放/声卡）
+            - 音量控制（0-15，实时写入）
+            - 播放控制（播放/暂停/停止/上下首）
+            - 连接管理（清除妙播/DLNA/全部停止）
+            - 服务器地址修改（家里 Wi-Fi / Tailscale 外出）
+            - 测试声卡
+            
+            服务器：
+            - 家里：192.168.1.10:8092
+            - 外出：100.88.1.6:8092（需开 Tailscale）
+          files: app/build/outputs/apk/debug/app-debug.apk
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
