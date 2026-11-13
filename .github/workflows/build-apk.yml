@@ -34,6 +34,9 @@ jobs:
           export PATH=$HOME/Android/Sdk/cmdline-tools/latest/bin:$PATH
           yes | sdkmanager --licenses > /dev/null 2>&1 || true
           sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
+          cd $GITHUB_WORKSPACE
+          echo "sdk.dir=$HOME/Android/Sdk" > local.properties
+          cat local.properties
 
       - name: 授权 Gradle
         run: chmod +x gradlew
