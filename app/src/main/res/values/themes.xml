@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.MiPlayManager" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="colorPrimary">#4DA3FF</item>
+        <item name="colorPrimaryVariant">#2A5A8A</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="android:statusBarColor">#0F141A</item>
+    </style>
+</resources>

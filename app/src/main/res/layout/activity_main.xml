@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0F141A"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- 标题 -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="妙播管理器"
+            android:textColor="#E8EEF5"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="MiPlay Bridge · 飞牛音箱 · 完整控制"
+            android:textColor="#8FA1B3"
+            android:textSize="14sp"
+            android:layout_marginBottom="16dp" />
+
+        <!-- 状态卡片 -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            app:cardBackgroundColor="#171E26"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="0dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+                <TextView
+                    android:id="@+id/tvStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="● 检查中..."
+                    android:textColor="#E8EEF5"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/tvActiveSource"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="当前来源：--"
+                    android:textColor="#4DA3FF"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="8dp" />
+                <TextView
+                    android:id="@+id/tvDevice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="设备：--"
+                    android:textColor="#8FA1B3"
+                    android:textSize="14sp"
+                    android:layout_marginTop="4dp" />
+                <TextView
+                    android:id="@+id/tvMiplayState"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="妙播：--"
+                    android:textColor="#8FA1B3"
+                    android:textSize="14sp"
+                    android:layout_marginTop="4dp" />
+                <TextView
+                    android:id="@+id/tvDlnaState"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="DLNA：--"
+                    android:textColor="#8FA1B3"
+                    android:textSize="14sp"
+                    android:layout_marginTop="4dp" />
+                <TextView
+                    android:id="@+id/tvPlayback"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="播放：--"
+                    android:textColor="#8FA1B3"
+                    android:textSize="14sp"
+                    android:layout_marginTop="4dp" />
+                <TextView
+                    android:id="@+id/tvSoundCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="声卡：--"
+                    android:textColor="#8FA1B3"
+                    android:textSize="14sp"
+                    android:layout_marginTop="4dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="服务器：192.168.1.10:8092"
+                    android:textColor="#8FA1B3"
+                    android:textSize="12sp"
+                    android:layout_marginTop="4dp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- 音量控制 -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            app:cardBackgroundColor="#171E26"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="0dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+                <TextView
+                    android:id="@+id/tvVolume"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="音量：10 / 15（67%）"
+                    android:textColor="#E8EEF5"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+                <SeekBar
+                    android:id="@+id/seekVolume"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="15"
+                    android:progress="10"
+                    android:layout_marginTop="8dp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="静音"
+                        android:textColor="#E8EEF5"
+                        android:textSize="14sp" />
+                    <Switch
+                        android:id="@+id/switchMute"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- 播放控制 -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="播放控制"
+            android:textColor="#E8EEF5"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp">
+            <Button
+                android:id="@+id/btnPrev"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_weight="1"
+                android:text="⏮ 上一首"
+                android:textColor="#E8EEF5"
+                android:backgroundTint="#1D2632"
+                android:layout_marginEnd="4dp" />
+            <Button
+                android:id="@+id/btnPlayPause"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_weight="1"
+                android:text="⏯ 播放/暂停"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#4DA3FF"
+                android:layout_marginHorizontal="4dp" />
+            <Button
+                android:id="@+id/btnNext"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_weight="1"
+                android:text="下一首 ⏭"
+                android:textColor="#E8EEF5"
+                android:backgroundTint="#1D2632"
+                android:layout_marginStart="4dp" />
+        </LinearLayout>
+        <Button
+            android:id="@+id/btnStop"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:text="⏹ 停止播放"
+            android:textColor="#E8EEF5"
+            android:backgroundTint="#1D2632"
+            android:layout_marginBottom="12dp" />
+
+        <!-- 连接管理 -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="连接管理"
+            android:textColor="#E8EEF5"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp">
+            <Button
+                android:id="@+id/btnClearMiplay"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_weight="1"
+                android:text="清除妙播连接"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#4DA3FF"
+                android:layout_marginEnd="4dp" />
+            <Button
+                android:id="@+id/btnClearDlna"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_weight="1"
+                android:text="清除 DLNA 连接"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#4DA3FF"
+                android:layout_marginStart="4dp" />
+        </LinearLayout>
+        <Button
+            android:id="@+id/btnStopAll"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:text="⛔ 全部停止"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#FF6B6B"
+            android:layout_marginBottom="12dp" />
+
+        <!-- 测试与刷新 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp">
+            <Button
+                android:id="@+id/btnTestSound"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_weight="1"
+                android:text="🔊 测试声卡"
+                android:textColor="#E8EEF5"
+                android:backgroundTint="#1D2632"
+                android:layout_marginEnd="4dp" />
+            <Button
+                android:id="@+id/btnRefresh"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_weight="1"
+                android:text="🔄 刷新状态"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#4DA3FF"
+                android:layout_marginStart="4dp" />
+        </LinearLayout>
+
+        <!-- 日志 -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="日志"
+            android:textColor="#E8EEF5"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+        <ScrollView
+            android:id="@+id/scrollLog"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:background="#171E26">
+            <TextView
+                android:id="@+id/tvLog"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#8FA1B3"
+                android:textSize="13sp"
+                android:padding="12dp"
+                android:text="等待检查...\n" />
+        </ScrollView>
+
+    </LinearLayout>
+</ScrollView>
